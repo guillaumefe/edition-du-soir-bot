@@ -15,4 +15,4 @@ app.post('/slack/events', function (req, res) {
     res.send(payload.challenge);
 });
 
-http.createServer(app).listen(3000);
+http.createServer(app).listen(process.env.PORT || 3000);
