@@ -1,0 +1,28 @@
+{
+  "name": "edition-du-soir-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "edition.js",
+  "dependencies": {
+    "@slack/bolt": "^2.1.1",
+    "dotenv": "^8.2.0",
+    "mustache": "^4.0.1",
+    "nedb": "^1.8.0",
+    "nedb-async": "^0.1.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node edition.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guillaumefe/edition-du-soir-bot.git"
+  },
+  "author": "Guillaumer Ferron",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/guillaumefe/edition-du-soir-bot/issues"
+  },
+  "homepage": "https://github.com/guillaumefe/edition-du-soir-bot#readme"
+}
