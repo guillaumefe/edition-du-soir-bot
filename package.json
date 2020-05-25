@@ -1,0 +1,24 @@
+{
+  "name": "slack-verify-signature-server",
+  "version": "1.0.0",
+  "description": "Use it with event-api signature verification",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guillaumefe/edition-du-soir-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guillaumefe/edition-du-soir-bot/issues"
+  },
+  "homepage": "https://github.com/guillaumefe/edition-du-soir-bot#readme"
+}
