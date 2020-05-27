@@ -21,4 +21,5 @@ module.exports.newsroom.check = require('./check_team_member')
 module.exports.newsroom.check_state_current_edition = require('./check_state_current_edition')
 module.exports.newsroom.close_current_edition = require('./close_current_edition')
 module.exports.newsroom.get_current_team = require('./get_current_team')
+module.exports.newsroom.remove_current_expert = require('./remove_current_expert')
 
