@@ -9,6 +9,14 @@ const bot = new App({
 
 const answer = require('./processing.js')(bot)
 
+bot.event("app_home_opened", async ({ context, event }) => {
+    console.log('home opened')
+})
+
+bot.event("message.app_home", async ({ context, event }) => {
+    console.log('oui')
+})
+
 bot.event("app_mention", async ({ context, event }) => {
 
      //console.log(context)

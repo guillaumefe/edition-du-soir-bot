@@ -12,3 +12,6 @@ module.exports.newsroom.get_expert_research = require('./get_expert_research')
 module.exports.newsroom.get_current_expert = require('./get_current_expert')
 module.exports.newsroom.ask_tonight_expert = require('./ask_tonight_expert')
 module.exports.newsroom.continue_without_expert = require('./continue_without_expert')
+module.exports.newsroom.get_main_channel = require('./get_main_channel')
+module.exports.newsroom.set_main_channel = require('./set_main_channel')
+

@@ -5,6 +5,7 @@
   "main": "edition.js",
   "dependencies": {
     "@slack/bolt": "^2.1.1",
+    "async-redis": "^1.1.7",
     "dotenv": "^8.2.0",
     "mustache": "^4.0.1",
     "nedb": "^1.8.0",
