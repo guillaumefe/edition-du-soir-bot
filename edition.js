@@ -22,12 +22,12 @@ bot.event("app_mention", async ({ context, event }) => {
      //console.log(context)
      //console.log(event)
 
-  try{
       //const bot_name = '<@U014C1THMQC>'
       const bot_name = '<@'+context.botUserId+'>'
       question = event.text.trim().replace(bot_name, '').trim();
       const answ = await answer(question, event)
 
+  try{
       await bot.client.chat.postMessage({
           token: context.botToken,
           channel: answ.channel,
@@ -36,8 +36,7 @@ bot.event("app_mention", async ({ context, event }) => {
           blocks: answ.blocks,
           icon_emoji: "female-technologist"
       });
-  }
-    catch (e) {
+  } catch (e) {
         //await bot.client.chat.postMessage({
         await bot.client.chat.postMessage({
             token: context.botToken,
@@ -48,7 +47,7 @@ bot.event("app_mention", async ({ context, event }) => {
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": ":warning: `"+e.message+"`"
+                        "text": ":warning: `"+e.message+"` `"+JSON.stringify(answ)+"`"
                     }
                 },
             ]
