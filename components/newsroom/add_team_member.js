@@ -18,8 +18,13 @@ module.exports = (app, db, redis) => {
             } else {
                 const prom = db.newsroom.asyncInsert(doc)
 
-                return prom.then((newDoc, err)=>{
+                return prom.then(async(newDoc, err)=>{
                     if (newDoc && newDoc.pseudo == doc.pseudo && !err) {
+                        await redis.set('no_team', 'false')
+                        flag = await redis.get('no_team')
+                        if (!flag || flag !== false) {
+                            return "Une erreur s'est produite"
+                        }
                         return ["{{pseudo}} a été ajouté à l'équipe"]
                     } else {
                         return "Il y a eu une erreur l'ajout de {{pseudo}} à l'équipe"

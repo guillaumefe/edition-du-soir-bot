@@ -1,7 +1,13 @@
 module.exports = (app, db, redis)=>{
 
     return {
-        question: "on continue sans expert",
+        question: [
+            "on continue sans expert",
+            "continue sans expert",
+            "oublie l'expert",
+            "laisse tomber l'expert",
+            "laisse tomber l'expert",
+        ],
         answer : async()=>{
 
             result = await redis.set('current expert', 'none')

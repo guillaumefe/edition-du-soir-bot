@@ -72,9 +72,13 @@ module.exports = (app, db, redis) => {
                 for (member in list_team) {
                     output += list_team[member].pseudo+" "
                 }
-            }
 
-            output = output.trim() + "." 
+                output = output.trim() + "." 
+
+            } 
+            //else if(await redis.get('no_team') !== "true") {
+            //    return ["L'équipe de ce soir n'est pas encore déterminé. À ce titre, je ne peux pas lancer l'édition. Vous pouvez me demander de continuer sans équipe."]
+            //}
 
             const result2 = await app.client.chat.postMessage({
                 token: process.env.TOKEN,
@@ -89,9 +93,11 @@ module.exports = (app, db, redis) => {
                 message_ts: result2.message.ts,
             });
 
-            await redis.set('edition en cours', result3.permalink)
-            out = "L'édition est lancée " + result3.permalink
-            return out
+            //await redis.set('edition en cours', result3.permalink)
+            //out = "L'édition est lancée " + result3.permalink
+            //console.log(out)
+            //return out
+            return 'ok'
         }
     }
 
