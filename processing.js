@@ -27,7 +27,7 @@ const db = {
 }
 
 const asyncRedis = require("async-redis");
-const redis = asyncRedis.createClient();
+const redis = asyncRedis.createClient(process.env.REDIS_URL);
 
 redis.on("error", function(error) {
   console.error("Redis Error: " + error);
