@@ -19,8 +19,8 @@ bot.event("message.app_home", async ({ context, event }) => {
 
 bot.event("app_mention", async ({ context, event }) => {
 
-     //console.log(context)
-     //console.log(event)
+     console.log(context)
+     console.log(event)
 
       //const bot_name = '<@U014C1THMQC>'
       const bot_name = '<@'+context.botUserId+'>'

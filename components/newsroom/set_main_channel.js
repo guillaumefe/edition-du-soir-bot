@@ -20,11 +20,10 @@ module.exports = (app, db, redis) => {
                 channel_name = env.channel.substring(1)
             }
 
-            console.log(channel_name)
             const list = await app.client.conversations.list({
                 // The token you used to initialize your app
                 token: process.env.TOKEN,
-                types: "public_channel,private_channel"
+                types: "public_channel, private_channel"
             });
 
             let FLAG = false
