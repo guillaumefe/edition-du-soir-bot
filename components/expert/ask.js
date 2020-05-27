@@ -1,4 +1,4 @@
-module.exports = (db, app) => {
+module.exports = (app, db, redis) => {
 
     return {
         question: [

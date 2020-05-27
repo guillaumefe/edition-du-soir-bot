@@ -1,21 +1,21 @@
 module.exports = (app, db, redis) => {
 
     return {
-        question: 'retire l\'expert {{pseudo}}',
+        question: "retire {{pseudo}} de l'équipe",
         answer : async (env) => {
 
-            let result = await db.expert.asyncFind({ pseudo : env.pseudo })
+            let result = await db.newsroom.asyncFind({ type: 'team', pseudo : env.pseudo })
             if(result && result.length) {
-                const removed = db.expert.asyncRemove({ pseudo: env.pseudo }, {})
+                const removed = db.newsroom.asyncRemove({ type: 'team', pseudo: env.pseudo }, {})
                 return removed.then((removed, err)=>{
                     if(removed && removed>0 && !err) {
-                        return ["Ok j'ai retiré cet expert de la base de donnée", "C'est fait :)"]
+                        return ["Ok j'ai retiré {{pseudo}} de l'équipe", "C'est fait :)"]
                     } else {
                         return 'Il y a eu une erreur'
                     }
                 })
             } else {
-                return "Désolé je n'ai pas trouvé cet expert dans la base de donnée"
+                return "Désolé je n'ai pas trouvé {{pseudo}} dans l'équipe"
             }
 
         }

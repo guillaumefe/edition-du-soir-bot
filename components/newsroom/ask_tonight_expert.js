@@ -1,4 +1,4 @@
-module.exports = (db) => {
+module.exports = (app, db, redis) => {
 
     return {
         question: ['demande à {{pseudo}} d\être notre expert de ce soir'],

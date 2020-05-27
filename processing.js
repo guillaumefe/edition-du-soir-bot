@@ -22,8 +22,16 @@ const Mustache = require('mustache')
 const store = require('./db')
 
 const db = {
-    expert : store('expert')
+    expert : store('expert'),
+    newsroom : store('newsroom')
 }
+
+const asyncRedis = require("async-redis");
+const redis = asyncRedis.createClient(process.env.REDIS_URL);
+
+redis.on("error", function(error) {
+  console.error("Redis Error: " + error);
+});
 
 function compare(s1, s2) {
 
@@ -83,7 +91,7 @@ function main(bot) {
 
                 if (typeof components[attr][sub][bundle] === 'function') 
                     //Instanciates component
-                    components[attr][sub][bundle]= components[attr][sub][bundle](db[sub], bot)
+                    components[attr][sub][bundle]= components[attr][sub][bundle](bot, db, redis)
 
                 if(Array.isArray(components[attr][sub][bundle].question)) {
                     for( i in components[attr][sub][bundle].question){
@@ -135,7 +143,10 @@ function main(bot) {
         if(typeof _a === 'function') {
             try {
                 _a = await _a(env).then((_b) => {
-                    if(typeof _b === 'object') {
+
+                    if (Array.isArray(_b)) {
+                        return _b
+                    } else if(typeof _b === 'object') {
 
                         // Handle specific options
                         // options = _b  //unsecure
