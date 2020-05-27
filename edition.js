@@ -32,7 +32,7 @@ bot.event("app_mention", async ({ context, event }) => {
           token: context.botToken,
           channel: answ.channel,
           thread_ts: answ.thread_ts,
-          text: answ.text + "<@"+event.user+">",
+          text: answ.text + " <@"+event.user+">",
           blocks: answ.blocks,
           icon_emoji: "female-technologist"
       });

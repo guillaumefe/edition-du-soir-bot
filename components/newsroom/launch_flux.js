@@ -50,8 +50,10 @@ module.exports = (app, db, redis) => {
 
             const entry = await redis.get('current expert')
             if (entry) {
-                output += " "
-                output += "L'expert de ce soir sera "+entry
+                if (entry !== 'none') {
+                    output += " "
+                    output += "L'expert de ce soir sera "+entry
+                }
             } else {
                 return ["L'expert de ce soir n'est pas encore déterminé. À ce titre, je ne peux pas lancer l'édition. Vous pouvez me demander de continuer sans expert."]
             }
