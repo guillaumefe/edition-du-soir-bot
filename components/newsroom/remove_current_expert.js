@@ -1,7 +1,9 @@
 module.exports = (app, db, redis) => {
 
     return {
-        question: ["annule l'expert ce ce soir", 
+        question: [
+            "annule l'expert de ce soir", 
+            "retire l'expert de ce soir", 
         ],
         answer : async (env) => {
 
