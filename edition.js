@@ -32,7 +32,7 @@ bot.event("app_mention", async ({ context, event }) => {
           token: context.botToken,
           channel: answ.channel,
           thread_ts: answ.thread_ts,
-          text: answ.text,
+          text: answ.text + "<@"+event.user+">",
           blocks: answ.blocks,
           icon_emoji: "female-technologist"
       });
@@ -47,7 +47,7 @@ bot.event("app_mention", async ({ context, event }) => {
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": ":warning: `"+e.message+"` `"+JSON.stringify(answ)+"`"
+                        "text": ":warning: `"+e.message+"` `"+JSON.stringify(answ)+"`" + " <@"+event.user+">"
                     }
                 },
             ]
