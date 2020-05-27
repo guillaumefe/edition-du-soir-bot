@@ -1,4 +1,4 @@
-module.exports = (db) => {
+module.exports = (app, db, redis) => {
 
     return {
         question: ["ajoute {{pseudo}} comme expert", "ajoute l'expert {{pseudo}}"],
@@ -19,13 +19,13 @@ module.exports = (db) => {
             }
 
 
-            let result = await db.asyncFind({ pseudo : env.pseudo })
+            let result = await db.expert.asyncFind({ pseudo : env.pseudo })
             if(result.length) {
                 
                 return 'Le pseudonyme {{pseudo}} est déjà inscrit comme expert'
 
             } else {
-                const prom = db.asyncInsert(doc)
+                const prom = db.expert.asyncInsert(doc)
 
                 return prom.then((newDoc, err)=>{
                     if (newDoc.pseudo == doc.pseudo && !err) {

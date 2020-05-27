@@ -27,9 +27,9 @@ const db = {
 }
 
 const asyncRedis = require("async-redis");
-const config = asyncRedis.createClient();
+const redis = asyncRedis.createClient();
 
-config.on("error", function(error) {
+redis.on("error", function(error) {
   console.error("Redis Error: " + error);
 });
 
@@ -91,7 +91,7 @@ function main(bot) {
 
                 if (typeof components[attr][sub][bundle] === 'function') 
                     //Instanciates component
-                    components[attr][sub][bundle]= components[attr][sub][bundle](db[sub], bot, config)
+                    components[attr][sub][bundle]= components[attr][sub][bundle](bot, db, redis)
 
                 if(Array.isArray(components[attr][sub][bundle].question)) {
                     for( i in components[attr][sub][bundle].question){

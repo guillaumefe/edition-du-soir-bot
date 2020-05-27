@@ -1,5 +1,5 @@
 
-module.exports = (db, app, config) => {
+module.exports = (app, db, redis) => {
 
     return {
 
@@ -13,7 +13,7 @@ module.exports = (db, app, config) => {
             "le principal channel est ce {}?"],
         answer : async (env) => {
 
-            entry = await config.get('main channel')
+            const entry = await redis.get('main channel')
             return ["Le channel principal est actuellement " + entry]
         }
     }
