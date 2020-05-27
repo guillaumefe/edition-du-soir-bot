@@ -12,26 +12,27 @@ module.exports = (app, db, redis) => {
 
         answer : async (env) => {
 
-            let channel, channel_id, channel_name
+            let channel, channel_name
             try {
                 channel = env.channel.match(/<(.*?)>/)[1]
-                channel_id = channel.split('|')[0].substring(1)
                 channel_name = channel.split('|')[1]
             } catch (e) {
-                return ["Désolé le channel {{channel}} n'existe pas"]
+                channel_name = env.channel.substring(1)
             }
 
+            console.log(channel_name)
             const list = await app.client.conversations.list({
                 // The token you used to initialize your app
-                token: process.env.TOKEN
+                token: process.env.TOKEN,
+                types: "public_channel,private_channel"
             });
 
             let FLAG = false
             list.channels.forEach(function(conversation){
                 // Key conversation info on its unique ID
-                id = conversation["id"];
                 name = conversation["name"];
-                if (id === channel_id && name === channel_name) {
+                console.log(name)
+                if (name === channel_name) {
                     FLAG = true
                 }
             })

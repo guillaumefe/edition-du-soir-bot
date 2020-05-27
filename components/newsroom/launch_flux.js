@@ -16,9 +16,14 @@ module.exports = (app, db, redis) => {
                 return ["Tout d'abord il faut m'indiquer le principal channel"]
             }
 
-            const channel = main_channel.match(/<(.*?)>/)[1]
-            const channel_id = channel.split('|')[0].substring(1)
-            const channel_name = channel.split('|')[1]
+            let channel, channel_name
+            try {
+                channel = main_channel.match(/<(.*?)>/)[1]
+                //const channel_id = channel.split('|')[0].substring(1)
+                channel_name = channel.split('|')[1]
+            } catch(e) {
+                channel_name = main_channel
+            }
 
             function prefix(date) {
                 var d = new Date(),
@@ -37,7 +42,7 @@ module.exports = (app, db, redis) => {
             // 26-05-capture-quot
             const result = await app.client.chat.postMessage({
                 token: process.env.TOKEN,
-                channel: channel_id,
+                channel: channel_name,
                 text: prefix()+"-capture-quot"
             });
 
@@ -71,14 +76,14 @@ module.exports = (app, db, redis) => {
 
             const result2 = await app.client.chat.postMessage({
                 token: process.env.TOKEN,
-                channel: channel_id,
+                channel: channel_name,
                 thread_ts: result.message.ts,
                 text: output 
             });
 
             const result3 = await app.client.chat.getPermalink({
                 token: process.env.TOKEN,
-                channel: channel_id,
+                channel: channel_name,
                 message_ts: result2.message.ts,
             });
 
