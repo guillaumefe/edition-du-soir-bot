@@ -11,6 +11,11 @@ module.exports = (app, db, redis) => {
             }
 
             const main_channel = await redis.get('main channel')
+
+            if(!main_channel) {
+                return ["Tout d'abord il faut m'indiquer le principal channel"]
+            }
+
             const channel = main_channel.match(/<(.*?)>/)[1]
             const channel_id = channel.split('|')[0].substring(1)
             const channel_name = channel.split('|')[1]
