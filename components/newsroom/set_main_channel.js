@@ -12,14 +12,14 @@ module.exports = (app, db, redis) => {
 
         answer : async (env) => {
 
+            let channel, channel_id, channel_name
             try {
-                const channel = env.channel.match(/<(.*?)>/)[1]
+                channel = env.channel.match(/<(.*?)>/)[1]
+                channel_id = channel.split('|')[0].substring(1)
+                channel_name = channel.split('|')[1]
             } catch (e) {
-                return ["Désolé ce channel n'existe pas"]
+                return ["Désolé le channel {{channel}} n'existe pas"]
             }
-
-            const channel_id = channel.split('|')[0].substring(1)
-            const channel_name = channel.split('|')[1]
 
             const list = await app.client.conversations.list({
                 // The token you used to initialize your app
