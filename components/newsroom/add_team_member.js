@@ -20,12 +20,13 @@ module.exports = (app, db, redis) => {
 
                 return prom.then(async(newDoc, err)=>{
                     if (newDoc && newDoc.pseudo == doc.pseudo && !err) {
-                        await redis.set('no_team', 'false')
-                        flag = await redis.get('no_team')
-                        if (!flag || flag !== false) {
-                            return "Une erreur s'est produite"
-                        }
-                        return ["{{pseudo}} a été ajouté à l'équipe"]
+                        return await redis.set('no_team', 'false').then(async ()=>{
+                            flag = await redis.get('no_team')
+                            if (!flag || flag !== false) {
+                                return "Une erreur s'est produite : no_team n'existe pas ou no_team n'est pas faux, après avoir été placé sur faux"
+                            }
+                            return ["{{pseudo}} a été ajouté à l'équipe"]
+                        })
                     } else {
                         return "Il y a eu une erreur l'ajout de {{pseudo}} à l'équipe"
                     }

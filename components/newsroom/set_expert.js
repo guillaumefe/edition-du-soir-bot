@@ -16,13 +16,17 @@ module.exports = (app, db, redis) => {
         ],
         answer : async (env) => {
 
-            result = await redis.set('current expert', env.pseudo)
-            entry = await redis.get('current expert')
-            if (entry && entry === env.pseudo) {
-                return ["L'expert de ce soir est {{pseudo}}", "Entendu {{pseudo}} est l'expert de ce soir"]
-            } else {
-                return "Une erreur s'est produite"
-            }
+            return await redis.set('current expert', env.pseudo).then(async (expert_set)=>{
+
+                return await redis.get('current expert').then(async (expert_get)=>{
+
+                    return await redis.set('current expert', env.pseudo).then(async ()=>{
+                        return ["L'expert de ce soir est {{pseudo}}", "Entendu {{pseudo}} est l'expert de ce soir"]
+                    })
+
+                })
+
+            })
         }
     }
 }

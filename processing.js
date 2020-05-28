@@ -48,6 +48,7 @@ function compare(s1, s2) {
     var score = 0;
     var variables = 0;
     var dict = {}
+    var closest = false
 
     for(var i = 0; i<s2Parts.length; i++)
     {
@@ -72,9 +73,14 @@ function compare(s1, s2) {
     let result = s2Parts.length - variables
     if (!result) dict = {}
 
+    if((score/(s2Parts.length - variables))*100 > 40) {
+        closest = true
+    }
+
     return {
         ok: score == result,
-        env: dict
+        env: dict,
+        closest: closest
     }
 }
 
@@ -82,16 +88,19 @@ function main(bot) {
 
     //generate dialogs
     const dialogs = []
+    const help = []
     for (attr in components) {
         for (sub in components[attr]) {
             //console.log('##################')
             //console.log("DOMAIN", sub)
             //console.log('##################')
+            
             for (bundle in components[attr][sub]) {
 
-                if (typeof components[attr][sub][bundle] === 'function') 
+                if (typeof components[attr][sub][bundle] === 'function') {
                     //Instanciates component
                     components[attr][sub][bundle]= components[attr][sub][bundle](bot, db, redis)
+                }
 
                 if(Array.isArray(components[attr][sub][bundle].question)) {
                     for( i in components[attr][sub][bundle].question){
@@ -99,6 +108,16 @@ function main(bot) {
                     }
                 } else {
                     console.log('-', components[attr][sub][bundle].question)
+                }
+
+                //Help
+
+                if(typeof components[attr][sub][bundle].answer === 'function') {
+                    if(Array.isArray(components[attr][sub][bundle].question)) {
+                        help.push(components[attr][sub][bundle].question[0])
+                    } else if (typeof components[attr][sub][bundle].question === 'string'){
+                        help.push(components[attr][sub][bundle].question)
+                    }
                 }
                 //console.log("COMMANDE : ", components[attr][sub][bundle].question)
                 //console.log("REPONSE : ", components[attr][sub][bundle].answer)
@@ -112,6 +131,39 @@ function main(bot) {
     return async (question, event) => {
 
         let bundle, env;
+        let closest = []
+
+        // hooks
+        if (question === 'aide') {
+            return  {
+                text: 'Edition Aide',
+                blocks: (()=>{
+                    let aide_q = []
+                    for (let i=0; i<help.length-1; i++) {
+                        aide_q.push({
+                            "type": "context",
+                            "elements": [
+                                {
+                                    "type": "mrkdwn",
+                                    "text": "- " + help[i]
+                                }
+                            ]
+                        })
+                    }
+                    let header = {
+                        "type": "section",
+                        "text": {
+                            "type": "mrkdwn",
+                            "text": "*:brain: "+help.length+" requêtes que vous pouvez m'adresser*"
+                        }
+                    }
+                    aide_q.unshift(header)
+                    return aide_q
+                })(),
+                channel: event.channel,
+                thread_ts: event.thread_ts
+            }
+        }
 
         for (obj in dialogs) {
             if (!bundle) {
@@ -123,6 +175,10 @@ function main(bot) {
                         bundle = _bundle
                         env = diff.env
                         break
+                    } else {
+                        if(diff.closest === true) {
+                            closest.push(array[entry]) 
+                        }
                     }
                 }
             }
@@ -131,7 +187,8 @@ function main(bot) {
         if (!bundle) {
             bundle = {
                 answer: "Je suis désolé, je n'ai pas compris cette question ```"+question+"```",
-                blocks: []
+                blocks: [],
+                unsure : true
             }
         }
 
@@ -160,9 +217,10 @@ function main(bot) {
                     } else {
                         return _b
                     }
+
                 })
             } catch {
-                _a = _a(env)
+                //_a = _a(env)
             }
         }
 
@@ -180,8 +238,14 @@ function main(bot) {
             blocks = answer
         }
 
-        //console.log(blocks)
-        //
+        if (bundle.unsure === true) {
+            if(closest && closest.length) {
+                text += "\nVoici quelques questions proches ```"+closest.join(', ')+"```"
+            } else {
+                text += "\nVoici quelques questions que vous pourriez me poser ```"+help.join(', ').replace(/, $/, '')+"```"
+            }
+        }
+
         return  {
             text: text,
             blocks: blocks,

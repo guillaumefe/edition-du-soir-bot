@@ -6,7 +6,7 @@ module.exports = (app, db, redis) => {
         answer : async() => {
 
             const entry = await redis.get('current expert')
-            if (entry) {
+            if (entry && entry !== "none") {
                 return ["L'expert actuel est " + entry]
             } else {
                 return ["L'expert de ce soir n'est pas encore déterminé"]

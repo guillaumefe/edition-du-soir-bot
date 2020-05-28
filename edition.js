@@ -13,14 +13,15 @@ bot.event("app_home_opened", async ({ context, event }) => {
     console.log('home opened')
 })
 
-bot.event("message.app_home", async ({ context, event }) => {
+bot.event("message.channels", async ({ context, event }) => {
     console.log('oui')
 })
 
 bot.event("app_mention", async ({ context, event }) => {
+    console.log('oui')
 
-     console.log(context)
-     console.log(event)
+     //console.log(context)
+     //console.log(event)
 
       //const bot_name = '<@U014C1THMQC>'
       const bot_name = '<@'+context.botUserId+'>'
@@ -32,7 +33,7 @@ bot.event("app_mention", async ({ context, event }) => {
           token: context.botToken,
           channel: answ.channel,
           thread_ts: answ.thread_ts,
-          text: answ.text + " <@"+event.user+">",
+          text: "<@"+event.user+"> " + answ.text,
           blocks: answ.blocks,
           icon_emoji: "female-technologist"
       });
